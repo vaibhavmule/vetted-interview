@@ -57,7 +57,7 @@
     <p><strong>Name:</strong> {{user.name}}</p>
     <p><strong>Email:</strong> {{user.email}}</p>
     <br>
-    <a href="/users/edit-profile/" class="button is-primary">Edit Profile</a>
+    <a href="/edit-profile/" class="button is-primary">Edit Profile</a>
 {% else %}
   <h2 class="subtitle">You are not logged in</h2>
   <a href="{% url 'login' %}" class="button is-primary">Login</a>
