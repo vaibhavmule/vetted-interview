@@ -48,6 +48,7 @@ class User(AbstractBaseUser):
     )
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+    created_by = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
 
     objects = UserManager()
 
@@ -64,11 +65,11 @@ class User(AbstractBaseUser):
 
     @property
     def is_company(self):
-        return self.user_type == COMPANY
+        return self.user_type == self.COMPANY
 
     @property
     def is_employee(self):
-        return self.user_type == EMPLOYEE
+        return self.user_type == self.EMPLOYEE
 
     @property
     def is_staff(self):

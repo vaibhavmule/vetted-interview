@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Employee{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated and user.is_company %}
+  Hi {{ user.email }}!
+  {{user.get_user_type_display}}  1
+  <p><a href="{% url 'logout' %}">logout</a></p>
+
+  <h2 class="subtitle">Add Employee</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add</button>
+  </form>
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a> |
+  <a href="{% url 'signup' %}">signup</a>
+{% endif %}
+{% endblock %}
