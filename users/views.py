@@ -3,15 +3,23 @@ from django.views import generic
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 
-
-
-from .admin import UserCreationForm, EmployeeCreationForm
+from .admin import UserCreationForm, EmployeeCreationForm, EmployerChangeForm
 from .models import User
 
 class SignUp(generic.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'registration/signup.html'
+
+def edit_profile(request):
+    if request.method == 'POST':
+        form = EmployerChangeForm(data=request.POST, instance=request.user)
+        form.save()
+        return HttpResponseRedirect('/')
+    else:
+        form = EmployerChangeForm(instance=request.user)
+
+    return render(request, 'registration/edit-profile.html', {'form': form})
 
 def index(request):
     users = []

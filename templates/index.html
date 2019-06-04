@@ -17,6 +17,10 @@
 {% empty %}
   No employee yet. <a href="/add-employee/">Add Employee</a>
 {% endfor %}
+{% elif user.is_authenticated and user.is_employee %}
+  Hi {{ user.name }}!
+  <p><a href="{% url 'logout' %}">logout</a></p>
+  <a href="/users/edit-profile/">Edit Profile</a>
 {% else %}
   <p>You are not logged in</p>
   <a href="{% url 'login' %}">login</a> |

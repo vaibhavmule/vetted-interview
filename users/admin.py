@@ -36,7 +36,7 @@ class EmployeeCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email',)
+        fields = ('name', 'email',)
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -59,10 +59,18 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'password', 'user_type', 'is_active', 'is_admin')
+        fields = ('name', 'email', 'password', 'user_type', 'is_active', 'is_admin')
 
     def clean_password(self):
         return self.initial["password"]
+
+
+class EmployerChangeForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ('name', 'email',)
+
 
 
 class UserAdmin(BaseUserAdmin):
@@ -71,7 +79,7 @@ class UserAdmin(BaseUserAdmin):
     list_display = ('email', 'user_type', 'is_admin')
     list_filter = ('user_type',)
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('name', 'email', 'password')}),
         ('Personal info', {'fields': ('user_type',)}),
         ('Permissions', {'fields': ('is_admin',)}),
     )

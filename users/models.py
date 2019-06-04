@@ -37,6 +37,11 @@ class User(AbstractBaseUser):
         (COMPANY, 'Company'),
         (EMPLOYEE, 'Employee'),
     ]
+    name = models.CharField(
+        verbose_name='name or company name',
+        max_length=100,
+        blank=True, null=True
+    )
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
