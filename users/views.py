@@ -1,15 +1,30 @@
 from django.urls import reverse_lazy
 from django.views import generic
 from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from .admin import UserCreationForm, EmployeeCreationForm, EmployerChangeForm
-from .models import User
+from .forms import EmployeeInviteForm
+from .models import User, Invite
 
-class SignUp(generic.CreateView):
-    form_class = UserCreationForm
-    success_url = reverse_lazy('login')
-    template_name = 'registration/signup.html'
+# class SignUp(generic.CreateView):
+#     form_class = UserCreationForm
+#     success_url = reverse_lazy('login')
+#     template_name = 'registration/signup.html'
+
+
+def accept_invite(request, token):
+    invite = get_object_or_404(Invite, token=token)
+    user, created = User.objects.get_or_create(email=invite.email, created_by=invite.created_by)
+    if request.method == 'POST':
+        form = EmployeeCreationForm(data=request.POST, instance=user)
+        form.save()
+        invite.delete()
+        return HttpResponseRedirect('/')
+    else:
+        form = EmployeeCreationForm(instance=user)
+
+    return render(request, 'registration/signup.html', {'form': form})
 
 def edit_profile(request):
     if request.method == 'POST':
@@ -23,10 +38,23 @@ def edit_profile(request):
 
 def index(request):
     users = []
+    invites = []
     if request.user.is_authenticated and request.user.is_company:
         users = User.objects.filter(user_type=3, created_by=request.user)
-    context = {'users': users}
+        invites = Invite.objects.filter(created_by=request.user)
+    context = {'users': users, 'invites': invites}
     return render(request, 'index.html', context)
+
+
+class InviteEmployee(generic.CreateView):
+    form_class = EmployeeInviteForm
+    template_name = 'invite_employee.html'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.created_by = self.request.user
+        self.object.save()
+        return HttpResponseRedirect('/')
 
 
 class AddEmployee(generic.CreateView):
@@ -47,7 +75,6 @@ class RemoveEmoloyee(generic.DeleteView):
 
     def get_object(self, queryset=None):
         obj = super(RemoveEmoloyee, self).get_object()
-        print(obj.created_by.id)
         if not obj.created_by == self.request.user:
             raise Http404
         return obj

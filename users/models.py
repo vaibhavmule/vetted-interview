@@ -79,3 +79,13 @@ class User(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_admin
+
+
+class Invite(models.Model):
+    email = models.EmailField(
+        verbose_name='email address',
+        max_length=255,
+        unique=True,
+    )
+    token = models.SlugField()
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)

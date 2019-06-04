@@ -8,7 +8,7 @@
   {{user.get_user_type_display}} 
   <p><a href="{% url 'logout' %}">logout</a></p>
 {% elif user.is_authenticated and user.is_company %}
-  <h2 class="title">Employees <a href="/add-employee/" class="button is-primary">Add</a></h2>
+  <h2 class="title">Employees <a href="/add-employee/" class="button is-primary">Add</a> or <a href="/invite-employee/" class="button is-primary">Invite</a></h2>
   <table class="table">
       <thead>
         <tr>
@@ -29,14 +29,30 @@
         </tr>
         {% empty %}
         <td>No employee yet. <a href="/add-employee/">Add Employee</a></td>
-        
+        {% endfor %}
       </tbody>
     </table>
+    <h2 class="subtitle">Employee Invites</h2>
+    <table class="table">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          {% for invite in invites %}
+          <tr>
+          <td>{{invite.email}}</td>
+          <td><a href="/invite-employee/{{invite.token}}/">Invite URL</a></td>
+          </tr>
+          {% empty %}
+          <td>No employee yet. <a href="/invite-employee/">Invite Employee</a></td>
+          {% endfor %}
+        </tbody>
+      </table>
 
-  <li>{{employee.created_by.id}}</li>
-
-  
-{% endfor %}
 {% elif user.is_authenticated and user.is_employee %}
     <p><strong>Name:</strong> {{user.name}}</p>
     <p><strong>Email:</strong> {{user.email}}</p>
