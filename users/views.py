@@ -1,7 +1,8 @@
 from django.urls import reverse_lazy
 from django.views import generic
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
+
 
 
 from .admin import UserCreationForm, EmployeeCreationForm
@@ -30,3 +31,16 @@ class AddEmployee(generic.CreateView):
         self.object.created_by = self.request.user
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
+
+
+class RemoveEmoloyee(generic.DeleteView):
+    model = User
+    success_url = reverse_lazy('index')
+    template_name = 'remove_employee.html'
+
+    def get_object(self, queryset=None):
+        obj = super(RemoveEmoloyee, self).get_object()
+        print(obj.created_by.id)
+        if not obj.created_by == self.request.user:
+            raise Http404
+        return obj
