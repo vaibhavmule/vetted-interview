@@ -16,16 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
-from users.views import index, AddEmployee, RemoveEmoloyee, InviteEmployee, accept_invite
+from users.views import index, AddEmployee, RemoveEmoloyee, InviteEmployee, accept_invite, edit_profile
 
 
 urlpatterns = [
     path('', index, name='index'),
+    path('edit-profile/', edit_profile, name='edit_profile'),
     path('invite-employee/', InviteEmployee.as_view()),
     path('invite-employee/<slug:token>/', accept_invite),
     path('add-employee/', AddEmployee.as_view()),
     path('remove-employee/<int:pk>/', RemoveEmoloyee.as_view()),
     path('admin/', admin.site.urls),
-    path('users/', include('users.urls')),
     path('users/', include('django.contrib.auth.urls')),
 ]

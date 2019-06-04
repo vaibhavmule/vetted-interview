@@ -7,11 +7,6 @@ from .admin import UserCreationForm, EmployeeCreationForm, EmployerChangeForm
 from .forms import EmployeeInviteForm
 from .models import User, Invite
 
-# class SignUp(generic.CreateView):
-#     form_class = UserCreationForm
-#     success_url = reverse_lazy('login')
-#     template_name = 'registration/signup.html'
-
 
 def accept_invite(request, token):
     invite = get_object_or_404(Invite, token=token)

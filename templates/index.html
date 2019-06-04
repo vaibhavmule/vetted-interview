@@ -9,7 +9,7 @@
   <p><a href="{% url 'logout' %}">logout</a></p>
 {% elif user.is_authenticated and user.is_company %}
   <h2 class="title">Employees <a href="/add-employee/" class="button is-primary">Add</a> or <a href="/invite-employee/" class="button is-primary">Invite</a></h2>
-  <table class="table">
+  <table class="table" id="employee_table">
       <thead>
         <tr>
           <th>Name</th>
@@ -18,7 +18,7 @@
           <th>Action</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="employee_tbody">
         
         {% for employee in users %}
         <tr>
