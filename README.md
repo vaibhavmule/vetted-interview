@@ -2,8 +2,8 @@
 
 Demo Admin Account
 url to login and create company: https://vetted-ems.herokuapp.com/admin/login/?next=/admin/users/user/add/
-demo@demo.com
-demodemo
+email: demo@demo.com
+password: demodemo
 
-After creation of the company, 
-url to login: https://vetted-ems.herokuapp.com/users/login/
+
+url to login for company and employee: https://vetted-ems.herokuapp.com/users/login/
