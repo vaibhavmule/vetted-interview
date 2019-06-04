@@ -31,14 +31,13 @@ def index(request):
 
 class AddEmployee(generic.CreateView):
     form_class = EmployeeCreationForm
-    success_url = reverse_lazy('index')
     template_name = 'add_employee.html'
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.created_by = self.request.user
         self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
+        return HttpResponseRedirect('/')
 
 
 class RemoveEmoloyee(generic.DeleteView):

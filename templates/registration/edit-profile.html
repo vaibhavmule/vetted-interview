@@ -1,12 +1,31 @@
 {% extends 'base.html' %}
-
-{% block title %}Sign Up{% endblock %}
+{% load bulma_tags %}
+{% block title %}Edit Profile{% endblock %}
 
 {% block content %}
-<h2 class="subtitle">Update Profile</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Update</button>
-</form>
+<section class="hero">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <div class="columns is-centered">
+          <div class="column is-half">
+              <h2 class="title">Update Profile</h2>
+            <hr>
+            <form method="post">
+              {% csrf_token %}
+              {{ form|bulma }}
+              <br>
+              <div class="field">
+                <p class="control">
+                  <button class="button is-primary is-medium is-fullwidth" type="submit">
+                  Update
+                  </button>
+                </p>
+              </div>
+            </form>
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 {% endblock %}

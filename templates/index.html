@@ -8,22 +8,42 @@
   {{user.get_user_type_display}} 
   <p><a href="{% url 'logout' %}">logout</a></p>
 {% elif user.is_authenticated and user.is_company %}
-  Hi {{ user.email }} {{user.id}}!
-  {{user.get_user_type_display}}  1
-  <p><a href="{% url 'logout' %}">logout</a></p>
+  <h2 class="title">Employees <a href="/add-employee/" class="button is-primary">Add</a></h2>
+  <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Team</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        {% for employee in users %}
+        <tr>
+        <td>{{employee.name}}</td>
+        <td>{{employee.email}} </td>
+        <td></td>
+        <td><a href="/remove-employee/{{employee.id}}/">Remove</a></td>
+        </tr>
+        {% empty %}
+        <td>No employee yet. <a href="/add-employee/">Add Employee</a></td>
+        
+      </tbody>
+    </table>
 
-  {% for employee in users %}
-  <li>{{employee.email}} {{employee.created_by.id}}<a href="/remove-employee/{{employee.id}}/">Remove</a></li>
-{% empty %}
-  No employee yet. <a href="/add-employee/">Add Employee</a>
+  <li>{{employee.created_by.id}}</li>
+
+  
 {% endfor %}
 {% elif user.is_authenticated and user.is_employee %}
-  Hi {{ user.name }}!
-  <p><a href="{% url 'logout' %}">logout</a></p>
-  <a href="/users/edit-profile/">Edit Profile</a>
+    <p><strong>Name:</strong> {{user.name}}</p>
+    <p><strong>Email:</strong> {{user.email}}</p>
+    <br>
+    <a href="/users/edit-profile/" class="button is-primary">Edit Profile</a>
 {% else %}
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">login</a> |
-  <a href="{% url 'signup' %}">signup</a>
+  <h2 class="subtitle">You are not logged in</h2>
+  <a href="{% url 'login' %}" class="button is-primary">Login</a>
 {% endif %}
 {% endblock %}
